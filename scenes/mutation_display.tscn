@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://bo7bpoh4qutn5"]
+
+[ext_resource type="Script" path="res://scripts/mutation_display.gd" id="1_16baa"]
+[ext_resource type="FontFile" uid="uid://b643lom3v0odo" path="res://assets/fonts/Neuropol X Rg.otf" id="1_e0ulp"]
+[ext_resource type="Texture2D" uid="uid://bv2iqyiwn2f0w" path="res://assets/up_arrow.png" id="2_vexsr"]
+
+[node name="MutationDisplay" type="HBoxContainer"]
+theme_override_constants/separation = 10
+script = ExtResource("1_16baa")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_e0ulp")
+text = "Ship scale"
+
+[node name="Icon" type="TextureRect" parent="."]
+layout_mode = 2
+texture = ExtResource("2_vexsr")
+expand_mode = 2

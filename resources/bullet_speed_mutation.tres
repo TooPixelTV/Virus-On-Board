@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="BulletSpeedMutation" load_steps=2 format=3 uid="uid://udgg77h1ka53"]
+
+[ext_resource type="Script" path="res://scripts/mutations/bullet_speed_mutation.gd" id="1_df2kw"]
+
+[resource]
+script = ExtResource("1_df2kw")
+min_value = 50.0
+max_value = 300.0

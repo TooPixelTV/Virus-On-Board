@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="BulletScaleMutation" load_steps=2 format=3 uid="uid://dnppxsbujxd8a"]
+
+[ext_resource type="Script" path="res://scripts/mutations/bullet_scale_mutation.gd" id="1_fxeho"]
+
+[resource]
+script = ExtResource("1_fxeho")
+min_value = 0.3
+max_value = 5.0

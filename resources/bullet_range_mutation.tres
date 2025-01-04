@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="BulletRangeMutation" load_steps=2 format=3 uid="uid://bwcnsupmu4yy8"]
+
+[ext_resource type="Script" path="res://scripts/mutations/bullet_range_mutation.gd" id="1_2asup"]
+
+[resource]
+script = ExtResource("1_2asup")
+min_value = 20.0
+max_value = 300.0

@@ -1,0 +1,215 @@
+[gd_scene load_steps=18 format=3 uid="uid://c8hgwcmbjhiw4"]
+
+[ext_resource type="Script" path="res://scripts/enemy_1.gd" id="1_hputk"]
+[ext_resource type="Texture2D" uid="uid://c2so4r310mnyc" path="res://assets/enemy_2.png" id="2_0ihcw"]
+[ext_resource type="AudioStream" uid="uid://cfo464v30u0oe" path="res://assets/sounds/boom-01.wav" id="2_4i4qn"]
+[ext_resource type="AudioStream" uid="uid://d0qxnpo024kid" path="res://assets/sounds/boom-02.wav" id="3_nwf18"]
+
+[sub_resource type="Shader" id="Shader_q6osl"]
+code = "shader_type canvas_item;
+
+uniform vec4 color : source_color = vec4(1.0);
+
+void fragment() {
+	vec4 original_color = texture(TEXTURE, UV);
+    vec4 tinted_color = original_color * color;
+    COLOR = tinted_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8dr16"]
+resource_local_to_scene = true
+shader = SubResource("Shader_q6osl")
+shader_parameter/color = Color(1, 1, 1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yu7tw"]
+size = Vector2(14, 14)
+
+[sub_resource type="Animation" id="Animation_dfppr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CPUParticles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_wna4l"]
+resource_name = "hurt"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(0.742258, 0, 0.139594, 1), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wa4uv"]
+_data = {
+"RESET": SubResource("Animation_dfppr"),
+"hurt": SubResource("Animation_wna4l")
+}
+
+[sub_resource type="Animation" id="Animation_s0i6b"]
+resource_name = "die"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:material:shader_parameter/color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CPUParticles2D:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.766667),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"play_die_sfx"
+}, {
+"args": [],
+"method": &"play_die_sfx"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nktu2"]
+_data = {
+"die": SubResource("Animation_s0i6b")
+}
+
+[sub_resource type="Animation" id="Animation_83dig"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_4wpaw"]
+resource_name = "idle"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.23, 0.865), Vector2(1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hfjxx"]
+_data = {
+"RESET": SubResource("Animation_83dig"),
+"idle": SubResource("Animation_4wpaw")
+}
+
+[sub_resource type="Curve" id="Curve_2euwu"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.0168539, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_7luhw"]
+colors = PackedColorArray(0.329412, 0.305882, 0.407843, 1, 0.329412, 0.305882, 0.407843, 0)
+
+[node name="Enemy2" type="CharacterBody2D" groups=["enemy"]]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1_hputk")
+speed = 25.0
+die_sounds = Array[AudioStream]([ExtResource("2_4i4qn"), ExtResource("3_nwf18")])
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_8dr16")
+texture = ExtResource("2_0ihcw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_yu7tw")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wa4uv"),
+"Global": SubResource("AnimationLibrary_nktu2")
+}
+
+[node name="IdleAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_hfjxx")
+}
+autoplay = "idle"
+
+[node name="DieSFX" type="AudioStreamPlayer" parent="."]
+volume_db = -3.0
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 50
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.8
+randomness = 0.23
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 40.0
+scale_amount_min = 0.7
+scale_amount_max = 3.0
+scale_amount_curve = SubResource("Curve_2euwu")
+color_ramp = SubResource("Gradient_7luhw")
